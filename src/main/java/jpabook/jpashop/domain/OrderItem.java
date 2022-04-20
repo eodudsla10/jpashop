@@ -35,7 +35,7 @@ public class OrderItem {
         orderItem.setItem(item);
         orderItem.setOrderPrice(orderPrice);
         orderItem.setCount(count);
-
+        System.out.println("찌호야 사랑해!!!! : " + count);
         item.removeStock(count);
         return orderItem;
     }
