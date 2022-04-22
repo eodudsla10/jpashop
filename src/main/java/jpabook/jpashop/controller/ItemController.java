@@ -6,10 +6,7 @@ import jpabook.jpashop.domain.Item.Item;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,7 +16,7 @@ public class ItemController {
 
     private final ItemService itemService;
 
-//    상품등록 page 이동
+    //    상품등록 page 이동
     @GetMapping("/items/new")
     public String createForm(Model model) {
         model.addAttribute("form", new BookForm());
@@ -67,18 +64,14 @@ public class ItemController {
     }
 
     //수정한 상품 data 전송
+    //준영속속성 해결 -> 변경 감지 사용
     @PostMapping("items/{itemId}/edit")
-    public String updateItem(@ModelAttribute("form") BookForm form) {
+    public String updateItem(@PathVariable String itemId, @ModelAttribute("form") BookForm form) {
 
-        Book book = new Book();
-        book.setId(form.getId());
-        book.setName(form.getName());
-        book.setPrice(form.getPrice());
-        book.setStockQuantity(form.getStockQuantity());
-        book.setAuthor(form.getAuthor());
-        book.setIsbn(form.getIsbn());
+        itemService.updateItem(form.getId(), form.getName(), form.getPrice());
 
-        itemService.saveItem(book);
-        return "redirect:items";
+        return "redirect:/items";
     }
+
+
 }
